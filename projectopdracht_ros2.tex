@@ -1,0 +1,569 @@
+% Signaaltheorie	1616EDSIGA	1616EDSIGA 	
+% Regeltechniek 1	1616REGT1A	1616REGT1A	
+% Regeltechniek 2	1616REGT2A 	1616REGT2A 	
+% Regeltechniek 3	1616REGT3A 	1616DTRT3A 	
+% Practicum Regeltechniek 1	1616PRREGA	1616PRREGA	
+% Practicum Regeltechniek 2	1616PRRT2A	1616PRRT2A	
+% Vermogenselektronica 1	1616VERMEA	1616VERMEA	
+% Vermogenselektronica 2	1616VERM2A 	1616VERM2A 	
+% Practicum Vermogenselektronica 1	1616PRVERA	1616PRVERA	
+% Practicum Vermogenselektronica 2	1616PRVR2A	1616PRVR2A	
+% WTB	VT	DT	
+% Regeltechniek 1	1609VKR33A 1610WDK24A	
+% Regeltechniek 2	1610WDK33A	1610WDK33A
+\documentclass[12pt,a4paper]{exam}
+\usepackage{inhollandexam}
+\noprintanswers 
+
+\opleiding{Elektrotechniek}           
+\variant{voltijd}						 
+\locatie{A1-23,24}		
+\aantalstudenten{?}				
+\examinator{J.R. van Hulzen} 		
+\collegejaar{2023--2024}		
+\blokperiode{1}	
+\leerjaar{2}	
+\onderwijseenheid{Project robot}
+\toetsnaam{Project Robot}	
+\toetscode{?}    
+\kans{regulier}
+\toetsdatum{voorjaar 2025}
+\toetstijdstip{12:00}	
+\toetsduur{120}	 
+
+\usepackage[natbibapa]{apacite}
+\bibliographystyle{apacite} 
+\usepackage[colorlinks=true,
+            linkcolor=red,
+            urlcolor=blue,
+            citecolor=gray]{hyperref}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\usepackage{csquotes}
+\usepackage{letltxmacro}% http://ctan.org/pkg/letltxmacro
+\usepackage{xpatch}% http://ctan.org/pkg/etoolbox
+\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage{eurosym}
+\usepackage[dutch]{babel}
+\usepackage{struktex}
+%\usepackage[hidelinks]{hyperref}
+\usepackage{answers}
+\pointname{pt}
+\usepackage{python}
+    \usepackage{graphicx,adjustbox}
+\usepackage{caption}
+\usepackage[colorlinks=true]{hyperref}
+\usepackage{textcomp} 
+\usepackage{multicol} 
+
+\usepackage{letltxmacro}% http://ctan.org/pkg/letltxmacro
+\usepackage{xpatch}% http://ctan.org/pkg/etoolbox
+\usepackage[usenames,dvipsnames]{xcolor}
+\usepackage{eurosym}
+\usepackage[dutch]{babel}
+\usepackage{struktex}
+%\usepackage[hidelinks]{hyperref}
+\usepackage{answers}
+\pointname{pt}
+\usepackage{python}
+    \usepackage{graphicx,adjustbox}
+\usepackage{caption}
+\usepackage[colorlinks=true]{hyperref}
+\usepackage{textcomp} 
+\usepackage{multicol} 
+\usepackage{comment}
+
+% Sander's additions for evaluating calculation for the boundary between adequate / inadequate results,
+% printing vectorized fonts, widening line spacing, drawing stuff at exact page coordinates and placing
+% opaque textboxes.
+\usepackage{lmodern} % to get vectorized fonts (better printing resolution)
+\usepackage{tikz} % for drawing vector graph(ic)s and for using pgf
+\usetikzlibrary{shapes,arrows.meta}
+\usetikzlibrary{arrows,calc,positioning}
+\tikzset{
+        block/.style = {draw, rectangle,
+         minimum height=1cm,
+        minimum width=2cm},
+        input/.style = {coordinate,node distance=1cm},
+        output/.style = {coordinate,node distance=2cm},
+        arrow/.style={draw, -latex,node distance=1cm,arrow head=5mm},
+        pinstyle/.style = {pin edge={latex-, black,node distance=2cm}},
+        sum/.style = {draw, circle, node distance=1cm},
+}
+
+% defines bode en root locus plots
+\usepackage{tikz}
+\usetikzlibrary{calc,angles,positioning,intersections,quotes,decorations.markings}
+\usepackage{tkz-euclide}
+\usetkzobj{all}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.11}
+
+
+\usetikzlibrary{patterns}
+\makeatletter
+\tikzset{% customization of pattern 
+        hatch distance/.store in=\hatchdistance,
+        hatch distance=5pt,
+        hatch thickness/.store in=\hatchthickness,
+        hatch thickness=5pt
+        }
+\pgfdeclarepatternformonly[\hatchdistance,\hatchthickness]{north east hatch}% name
+    {\pgfqpoint{-1pt}{-1pt}}% below left
+    {\pgfqpoint{\hatchdistance}{\hatchdistance}}% above right
+    {\pgfpoint{\hatchdistance-1pt}{\hatchdistance-1pt}}%
+    {
+        \pgfsetcolor{\tikz@pattern@color}
+        \pgfsetlinewidth{\hatchthickness}
+        \pgfpathmoveto{\pgfqpoint{0pt}{0pt}}
+        \pgfpathlineto{\pgfqpoint{\hatchdistance}{\hatchdistance}}
+        \pgfusepath{stroke}
+    }
+\makeatother
+
+
+
+
+\pgfkeys{/pgf/number format/precision=0} % for calculating / evaluating values to be printed
+\usepackage{setspace} % for use of the 'onehalfspace' env. (line spacing)
+\usepackage[pscoord]{eso-pic}% The zero point of the coordinate system is the lower left corner of the page (the default). Eso-pic is used for drawing stuff @ EXACT page coordinates...
+\newcommand{\placetextbox}[3]{% \placetextbox{<horizontal pos>}{<vertical pos>}{<stuff>}
+  \setbox0=\hbox{#3}% Put <stuff> in a box
+  \AddToShipoutPictureFG*{% Add <stuff> to current page foreground
+    \put(\LenToUnit{#1\paperwidth},\LenToUnit{#2\paperheight}){\vtop{{\null}\makebox[0pt][c]{#3}}}%
+  }%
+}%
+\setlength\answerlinelength{6cm} % answerline length could be a little bit longer!
+% End Sander's additions
+
+\xpatchcmd{\answerline}% <cmd>
+  {\par\nobreak\vskip\answerskip \hfill}% <search>
+  {}% <replace>
+  {}{}% <success><failure>
+\xpatchcmd{\answerline}{\fi \par}{\fi}{}{}% Remove line break after \answerline
+\makeatletter
+\LetLtxMacro{\oldanswerline}{\answerline}
+\RenewDocumentCommand{\answerline}{s o}{%
+  \begingroup
+  \IfBooleanTF{#1}
+    {\def\@queslevel{\relax}}% \answerline*
+    {}% \answerline
+  \IfNoValueTF{#2}
+    {\oldanswerline[{}]}% \answerline
+    {\oldanswerline[#2]}% \answerline[..]
+  \endgroup
+}
+\makeatother
+
+\definecolor{LightGray}{gray}{0.9}
+\lstset {
+  language=[Sharp]C,
+  captionpos=b,
+  %frame=lines,
+  morekeywords={var,get,set},
+  basicstyle=\footnotesize\ttfamily,
+  keywordstyle=\color{blue},
+  commentstyle=\color{ForestGreen},
+  stringstyle=\color{BrickRed},
+  backgroundcolor=\color{LightGray},
+  numbers=left,
+  numberstyle=\scriptsize,
+  stepnumber=1,
+  numbersep=5pt,
+  breaklines=true,
+  tabsize=4,
+  showstringspaces=false,
+  emph={double,bool,int,unsigned,char,true,false,void,get,set},
+  emphstyle=\color{blue},
+  emph={Assert,Test},
+  emphstyle=\color{red},
+  emph={[2]\#using,\#define,\#ifdef,\#endif},
+  emphstyle={
+    [2]\color{blue},
+    frame=shadowbox,
+    rulesepcolor=\color{grey},
+    lineskip={-1.5pt} % single line spacing
+  }
+}
+
+
+
+% Sander's additions for evaluating calculation for the boundary between adequate / inadequate results,
+% printing vectorized fonts, widening line spacing, drawing stuff at exact page coordinates and placing
+% opaque textboxes.
+\usepackage{lmodern} % to get vectorized fonts (better printing resolution)
+\usepackage{tikz} % for drawing vector graph(ic)s and for using pgf
+\usetikzlibrary{shapes,arrows.meta}
+\usetikzlibrary{arrows,calc,positioning}
+\tikzset{
+        blok/.style = {draw, rectangle,
+         minimum height=1cm,
+        minimum width=2cm},
+        input/.style = {coordinate,node distance=1cm},
+        output/.style = {coordinate,node distance=2cm},
+        arrow/.style={draw, -latex,node distance=1cm,arrow head=5mm},
+        pinstyle/.style = {pin edge={latex-, black,node distance=2cm}},
+        sum/.style = {draw, circle, node distance=1cm},
+}
+
+
+
+\setlength\answerlinelength{6cm} % answerline length could be a little bit longer!
+% End Sander's additions
+
+\xpatchcmd{\answerline}% <cmd>
+  {\par\nobreak\vskip\answerskip \hfill}% <search>
+  {}% <replace>
+  {}{}% <success><failure>
+\xpatchcmd{\answerline}{\fi \par}{\fi}{}{}% Remove line break after \answerline
+\makeatletter
+\LetLtxMacro{\oldanswerline}{\answerline}
+\RenewDocumentCommand{\answerline}{s o}{%
+  \begingroup
+  \IfBooleanTF{#1}
+    {\def\@queslevel{\relax}}% \answerline*
+    {}% \answerline
+  \IfNoValueTF{#2}
+    {\oldanswerline[{}]}% \answerline
+    {\oldanswerline[#2]}% \answerline[..]
+  \endgroup
+}
+\makeatother
+
+\definecolor{LightGray}{gray}{0.9}
+\lstset {
+  language=[Sharp]C,
+  captionpos=b,
+  %frame=lines,
+  morekeywords={var,get,set},
+  basicstyle=\footnotesize\ttfamily,
+  keywordstyle=\color{blue},
+  commentstyle=\color{ForestGreen},
+  stringstyle=\color{BrickRed},
+  backgroundcolor=\color{LightGray},
+  numbers=left,
+  numberstyle=\scriptsize,
+  stepnumber=1,
+  numbersep=5pt,
+  breaklines=true,
+  tabsize=4,
+  showstringspaces=false,
+  emph={double,bool,int,unsigned,char,true,false,void,get,set},
+  emphstyle=\color{blue},
+  emph={Assert,Test},
+  emphstyle=\color{red},
+  emph={[2]\#using,\#define,\#ifdef,\#endif},
+  emphstyle={
+    [2]\color{blue},
+    frame=shadowbox,
+    rulesepcolor=\color{grey},
+    lineskip={-1.5pt} % single line spacing
+  }
+}
+
+\domein{Techniek, Ontwerpen \& Informatica}	% naam van domain volgens Inholland (default "Techniek, Ontwerpen \& Informatica")
+\cluster{Engineering en Business}						                    % naam van cluster volgens Inholland (default "ICT")
+\antwoordenvel{lijntjespapier}			                   % lijntjespapier | op opgave schrijven | schrapkaart | ruitjespapier (default "lijntjespapier")
+\opgaveninleveren{true}					             % true | false (default "false")
+\rekenmachine{standaard}					                 % grafisch | standaard | geen (default "geen")
+% welke hulpmiddelen er verder nog gebruikt mogen worden
+\hulpmiddelen{Bij het practicum mogen hulpmiddelen zoals boeken of uitwerkingen gebruikt worden.} 
+% welke cesuur wordt toegepast volgens toetsmatrijs
+\cesuur{Het te behalen aantal punten staat bij de opgaven.\\ Het eindcijfer is: $\text{cijfer} = behaalde punten / max punten \times 9 +1$\\ De cesuur is de helft van het aantal te behalen punten (cijfer 5.5)}
+
+\newcounter{NumberInTable}
+\newcommand{\LTNUM}{\stepcounter{NumberInTable}{(\theNumberInTable)}}
+
+\newcommand{\Laplace}[1]{\ensuremath{\mathcal{L}{\left\{#1\right\}}}}
+\newcommand{\InvLap}[1]{\ensuremath{\mathcal{L}^{-1}{\left\{#1\right\}}}}
+
+\usetikzlibrary{decorations.markings}
+\newcommand{\dhorline}[3][0]{%
+    \tikz[baseline]{\path[decoration={markings,
+      mark=between positions 0 and 1 step 2*#3
+      with {\node[fill, circle, minimum width=#3, inner sep=0pt, anchor=south west] {};}},postaction={decorate}]  (0,#1) -- ++(#2,0);}}
+\newcommand{\dvertline}[3][0]{%
+    \tikz[baseline]{\path[decoration={markings,
+      mark=between positions 0 and 1 step 2*#2
+      with {\node[fill, circle, minimum width=#2, inner sep=0pt, anchor=south west] {};}},postaction={decorate}] (0, #1) -- ++(0,#3);}}  
+
+% direction fileds
+
+\usepackage{subfig}
+\pgfplotsset{compat=1.8}
+
+\usepackage{amsmath}
+
+\pgfplotsset{ % Define a common style, so we don't repeat ourselves
+    MaoYiyi/.style={
+        width=0.6\textwidth, % Overall width of the plot
+        axis equal image, % Unit vectors for both axes have the same length
+        view={0}{90}, % We need to use "3D" plots, but we set the view so we look at them from straight up
+        xmin=0, xmax=1.1, % Axis limits
+        ymin=0, ymax=1.1,
+        domain=0:1, y domain=0:1, % Domain over which to evaluate the functions
+        xtick={0,0.5,1}, ytick={0,0.5,1}, % Tick marks
+        samples=11, % How many arrows?
+        cycle list={    % Plot styles
+                gray,
+                quiver={
+                    u={1}, v={f(x)}, % End points of the arrows
+                    scale arrows=0.075,
+                    every arrow/.append style={
+                        -latex % Arrow tip
+                    },
+                }\\
+                red, samples=31, smooth, thick, no markers, domain=0:1.1\\ % The plot style for the function
+        }
+    }
+}
+
+\usepackage{listings}
+\usepackage[T1]{fontenc}
+\usepackage{
+  color,
+  beramono,
+  listings,
+  textcomp
+}
+
+\definecolor{lightgray}{RGB}{245,245,245}
+\definecolor{darkgray}{RGB}{128,128,128}
+
+\lstset{
+  abovecaptionskip={0cm},
+  backgroundcolor={\color{lightgray}},
+  basicstyle={\small\ttfamily},
+  breakatwhitespace=true,
+  breaklines=true,
+  captionpos=b,
+  frame=tb,
+  resetmargins=true,
+  sensitive=true,
+  stepnumber=1,
+  tabsize=4,
+  upquote=true
+}
+
+\AtBeginDocument{\lstdefinelanguage{bash}[]{sh}%
+  {morekeywords={alias,bg,bind,builtin,caller,command,compgen,compopt,%
+      complete,coproc,curl,declare,disown,dirs,enable,fc,fg,help,%
+      history,jobs,let,local,logout,mapfile,printf,pushd,popd,%
+      readarray,select,set,suspend,shopt,source,times,type,typeset,%
+      ulimit,unalias,wait},%
+   otherkeywords={ [, ], [[, ]], \{, \} }%
+  }%
+
+\lstdefinelanguage{sh}%
+  {morekeywords={awk,break,case,cat,cd,continue,do,done,echo,elif,else,%
+      env,esac,eval,exec,exit,export,expr,false,fi,for,function,getopts,%
+      hash,history,if,in,kill,login,newgrp,nice,nohup,ps,pwd,read,%
+      readonly,return,set,sed,shift,test,then,times,trap,true,type,%
+      ulimit,umask,unset,until,wait,while},%
+   morecomment=[l]\#,%
+   morestring=[d]",%
+   alsoletter={*"'0123456789.},%
+   alsoother={\{\=\}},%
+   literate={{=}{{{=}}}1},%
+   literate={\$\{}{{{{\bfseries{}\$\{}}}}2,%
+   otherkeywords={ [, ], \{, \},sudo,apt, install }%
+  }[keywords,comments,strings]%
+}
+
+\PassOptionsToPackage{hyphens}{url}\usepackage{hyperref}
+
+\newcounter{vraagnummer}
+\setcounter{vraagnummer}{1}
+\newcounter{itemcounter}
+\setcounter{itemcounter}{0}
+
+
+
+\begin{document}
+ \maketitle
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newpage
+\part*{Projectopdracht ROS2}
+\large
+\noindent \rule{\linewidth}{0.1mm}
+\setcounter{vraagnummer}{0}
+\setlength{\abovedisplayskip}{10pt}
+\section{Toolchain}
+Het opzetten van de toolchain is afhankelijk van het gekozen platform. De hieronder beschreven methode is getest op een Intel mini-PC en een Raspberry-Pi5/8GB. In beide gevallen is gebruik gemaakt van nieuwe Ubuntu 24.04 (Noble) setup. Het doel is om een robot besturing te realiseren die kan worden aangestuurd met Python en/of C/C++.
+\subsection{Wat heb je nodig?}
+
+\subsection{Terminator}
+Het volgende tooltje dat we gaan installeren is \textit{Terminator}. Dit is een verbeterede versie van \textit{Terminal} en kan in een enkel scherm meerdere terminals openen.
+\begin{lstlisting}[language=bash]
+sudo apt install terminator
+\end{lstlisting}
+Zie ook
+{\small \url{https://cheatography.com/svschannak/cheat-sheets/terminator-ubuntu/}}. De meest gebruikte commando's zijn
+\textit{Ctrl+Shift+O}, Split horizontaal,
+\textit{Ctrl+Shift+E}, Split verticaal en
+\textit{Ctrl+Shift+W}, sluit terminal.
+
+\subsection{Gedit}
+Om even snel een shell script of een file te wijzigen kan gebruik gemaakt worden van nano in een terminal. Naast nano is het handig om een editor te hebben die in een apart window opent. Dit kan gedaan worden met \textit{Gedit}.
+\begin{lstlisting}[language=bash]
+sudo apt install gedit
+\end{lstlisting}
+
+\subsection{Visual studio code}
+installeer \textit{vscode} op Ubuntu. Als vscode ge\"installeerd is ga dan binnen vscode naar extensions in het linker zij-menu en installeer \textit{Python} en \textit{C/C++} van Microsoft en \textit{Cmake}. Als dit gedaan is het handig om \textit{pip} voor Python te installeren. Dit gaat via de commandline in een terminal met
+\begin{lstlisting}[language=bash]
+sudo apt install python3-pip
+\end{lstlisting}
+
+%\subsection{ImageMagick}
+%======= Imagemagick blijkt niet te werken... xdotool kan handig zijn..
+%Voor het maken van screenshots kunnen we Imagemagick gebruiken.
+%\begin{lstlisting}[language=bash]
+%sud apt install xdotool
+%sudo apt install Imagemagick
+%sudo apt remove imagemagick* -y
+%\end{lstlisting}
+%
+%xdotool geeft het id van het window dat open staat met
+% 
+%\begin{lstlisting}[language=bash]
+%import window "$(xdotool getwindowfocus -f)" /tmp/file.png
+%\end{lstlisting} 
+% 
+% 
+%
+%Maak een schreenshot vanuit een terminal met
+%\begin{lstlisting}[language=bash]
+%sudo apt install Imagemagick
+%\end{lstlisting}
+
+
+\subsection{Ros2 Jazzy-Jalisco}
+De Ros2 versie die we gaan installeren is de Jazzy-Jalisco versie die compatable is met Ubuntu-24.04 (Noble). Het voordeel hier van is dat de installatie gedaan kan worden op een PC, mini-PC of op een Raspberry Pi 5. Zie\\\noindent 
+{\small \url{https://docs.ros.org/en/rolling/Releases/Release-Jazzy-Jalisco.html}}\\\noindent
+Er is met Ubuntu 24.04 (Noble) Tier 1 support voor zowel het amd64 als het arm64 platform. De installatiemethode die we gebruiken is het installeren via \textit{packages} zodat alle noodzakelijke \textit{dependencies} automatisch worden meegenomen. Het tweede voordeel is dat de packages dan ook bij de reguliere updates worden meegenomen. 
+
+De installatie van ROS2 Jazzy-Jalisco staat beschreven op de docs.ros.org pagina:\\\noindent 
+{\small \url{https://docs.ros.org/en/jazzy/Installation/Ubuntu-Install-Debians.html}} en wordt hier samengevat zonder uitleg.\\
+Begin met controleren of de \textit{locale} settings UTF-8 ondersteunen. 
+\begin{lstlisting}[language=bash]
+locale  # controleer instellingen
+\end{lstlisting}
+als UTF-8 niet ondersteund wordt kan deze ondersteuning worden toegevoegd met
+\begin{lstlisting}[language=bash]
+sudo apt update && sudo apt install locales
+sudo locale-gen en_US en_US.UTF-8
+sudo update-locale LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8
+export LANG=en_US.UTF-8
+locale  # controleer instellingen
+\end{lstlisting}
+De volgende stap is het toevoegen van de benodigde \textit{repositories}. De belangrijkste is de \textit{Ubuntu Universe repository}. Voeg deze toe met
+\begin{lstlisting}[language=bash]
+sudo apt install software-properties-common
+sudo add-apt-repository universe
+\end{lstlisting}
+Voeg de ROS 2 GPG (GNU Privacy Guard) key toe met apt.
+\begin{lstlisting}[language=bash]
+sudo apt update && sudo apt install curl -y
+sudo curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg
+\end{lstlisting}
+Voeg de repository toe aan de sources list.
+\begin{lstlisting}[language=bash]
+echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(. /etc/os-release && echo $UBUNTU_CODENAME) main" | sudo tee /etc/apt/sources.list.d/ros2.list > /dev/null
+\end{lstlisting}
+Omdat we ook Ros packages gaan bouwen hebben we de ros development tools nodig. Deze worden ge\"installeerd met
+\begin{lstlisting}[language=bash]
+sudo apt update && sudo apt install ros-dev-tools
+\end{lstlisting}
+waarna we het geheel afronden met de installatie van de desktop versie van ros2 jazzy.
+\begin{lstlisting}[language=bash]
+sudo apt update && sudo apt upgrade
+sudo apt install ros-jazzy-desktop
+\end{lstlisting}
+Om te testen of alles goed gegaan is kunnen we een simpele demo applicatie starten met
+\begin{lstlisting}[language=bash]
+source /opt/ros/jazzy/setup.bash
+ros2 run demo_nodes_cpp talker
+\end{lstlisting}
+De applicatie stuurt messages uit die kunnen worden opgevangen met behulp van een tweede demo applictatie
+\begin{lstlisting}[language=bash]
+source /opt/ros/jazzy/setup.bash
+ros2 run demo_nodes_py listener
+\end{lstlisting}
+Het zou nu moeten werken. Het \textit{source} commando moet bij elke terminal die geopend wordt worden uitgevoerd. Om dit te stroomlijnen kunnen we het \textit{.bashrc} script aanpassen met
+\begin{lstlisting}[language=bash]
+gedit ~/.bashrc
+\end{lstlisting}
+Voeg onder in de \textit{.bashrc} file de regel
+\begin{lstlisting}[language=bash]
+source /opt/ros/jazzy/setup.bash
+\end{lstlisting}
+toe en save de file met \textit{Ctrl+S}. Als deze stap overgeslagen wordt zal in een nieuwe terminal het runnen van een ros2 commando een \textit{command not found} error geven.
+
+\subsection{colcon}
+Voor ontwikkelen van eigen code voor de ROS2 omgeving zijn development tools nodig. Een van deze tools is \textit{colcon}. Zie ook\\
+{\small \url{https://colcon.readthedocs.io/en/released/user/installation.html}}
+\begin{lstlisting}[language=bash]
+sudo apt install python3-colcon-common-extensions
+\end{lstlisting}
+Om gebruik te kunnen maken van de autocomplete functies moeten we de volgende regel toeveoegen aan het \textit{~\.bashrc} script met \textit{gedit}
+\begin{lstlisting}[language=bash]
+source /usr/share/colcon_cd/function/colcon_cd-argcomplete.bash
+\end{lstlisting}
+
+
+
+\subsection{phidgets}
+
+%{\small \sloppy{\url{ https://github.com/ros-drivers/phidgets_drivers/tree/noetic/phidgets_digital_outputs}}}\\
+{\small \url{https://github.com/trinib/Linux-Bash-Commands}}\\
+{\small \url{https://github.com/Myzhar/ldrobot-lidar-ros2}}
+
+\subsection{moteus}
+
+\begin{lstlisting}[language=bash]
+pip3 install moteus_gui --break-system-packages
+\end{lstlisting}
+
+
+
+\section{Workspace}
+\subsection{setup}
+\begin{lstlisting}[language=bash]
+mkdir ros2_ws
+cd ros2_ws
+mkdir src
+colcon build
+\end{lstlisting}
+de output in de terminal is \textit{summary: 0 packages dinished [0.30s]}. Controleer of de directories \textit{build}, \textit{install} en \textit{log} zijn toegevoegd en controleer de inhoud van de \textbf{install} directory 
+\begin{lstlisting}[language=bash]
+cd install
+ls
+\end{lstlisting}
+er is een bash script genaamd \textit{local\_setup.bash} deze moeten we ook via \textit{source} beschikbaar maken.
+\begin{lstlisting}[language=bash]
+source local_setup.bash
+\end{lstlisting}
+Het verschil tussen \textit{local\_setup.bash} en \textit{setup.bash} is in de scope. Aangezien \textit{setup.bash}  een bredere scope heeft zullen we die hier gebruiken. Gebruik weer \textit{gedit} om een regel toe te voegen aan \textit{.bashrc}
+\begin{lstlisting}[language=bash]
+gedit ~/.bashrc
+\end{lstlisting}
+voeg de regel
+\begin{lstlisting}[language=bash]
+source ~/ros2_ws/install/setup.bash
+\end{lstlisting}
+toe aan het einde van de file \textit{\textasciitilde/.bashrc}.
+\subsection{Een node aanmaken}
+Een package aanmaken onder ros2 kan gedaan worden in de \textit{src} directory van de workspace. In dit eerste voorbeeld maken we een python package aan.
+\begin{lstlisting}[language=bash]
+cd ~/ros2_ws/src
+ros2 pkg create my_py_pkg --build-type ament_python
+\end{lstlisting}
+
+
+\end{document}
