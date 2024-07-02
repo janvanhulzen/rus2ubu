@@ -86,8 +86,8 @@ https://github.com/mjbots/fdcanusb/blob/master/70-fdcanusb.rules
 which states that the file 70-fdcanusb.rules should be downloaded and copied into /etc/udev/rules.d
 
 # Install into /etc/udev/rules.d:
-sudo cp ~/Downloads/70-fdcanusb.rules /etc/udev/rules.d
-sudo udevadm control --reload-rules
-sudo udevadm trigger --subsystem-match=tty
+$ sudo cp ~/Downloads/70-fdcanusb.rules /etc/udev/rules.d
+$ sudo udevadm control --reload-rules
+$ sudo udevadm trigger --subsystem-match=tty
 
 
