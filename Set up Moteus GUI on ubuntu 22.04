@@ -1,0 +1,85 @@
+To install Moteus GUI on a fresh install of Ubuntu 22.04 a few steps are needed.
+
+Start with
+
+$ sudo apt update && sudo apt upgrade -y
+
+Check the python veriosn with
+
+$ python3 --version
+
+It appears that Ubuntu 22.04 has python3.10. The next step is to setup pip
+
+sudo apt install python3-pip -y
+
+Install the matplotlib library
+
+$ pip3 install matplotlib
+
+To enable a reliable software enviroment a few packages need to be installed.
+
+$ sudo apt install build-essential libssl-dev libffi-dev python3-dev
+
+The Next step is to set up a virtual enviroment to safely use python without interfering with system packages. 
+
+$ sudo apt install python3-venv -y
+
+Next create a directory for the venv. In this case
+
+$ mkdir moteus
+$ cd moteus
+
+Set up the actual enviroemet with
+
+$ python3 -m venv gui_env
+
+and activate it with
+
+$ source ~/moteus/gui_env/bin/activate
+
+in order to deactivate it use 
+
+$ deactivate
+
+With the virtual enviroment active install the moteus gui using
+
+$ pip3 install moteus_gui
+
+Start the gui using
+
+$ python3 -m moteus_gui.tview --devices=1
+
+At this point some errors may pop up most notably an error stating that Numpy 2.0.0 
+We krijgen nu een error over numpy package.
+\begin{lstlisting}[language=bash]
+python3
+import numpy 
+numpy.__version__
+\end{lstlisting}
+dit is versie 2.0.0. We moeten de versie downgraden naar
+\begin{lstlisting}[language=bash]
+pip install --upgrade numpy==1.26.4
+\end{lstlisting}
+Dit command deinstalleerd numpy 2.0.0 en installeert de laatste numpy 1 versie van 6 Februari 2024.
+
+\begin{lstlisting}[language=bash]
+export QT_DEBUG_PLUGINS=1
+\end{lstlisting}
+Het blijkt dat de fout komt door een missend QT package genaamd libxcb-xinerama0. De oplossing (via google) is
+\begin{lstlisting}[language=bash]
+sudo apt-get install libxcb-xinerama0
+sudo apt-get install libxkbcommon-x11-0 libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-randr0 libxcb-render-util0 libxcb-xinerama0 libxcb-xfixes0 libegl1-mesa
+\end{lstlisting}
+
+
+Ga naar github en download de file
+{\small \url{https://github.com/mjbots/fdcanusb/blob/master/70-fdcanusb.rules}}
+
+
+
+\begin{lstlisting}[language=bash]
+# Install into /etc/udev/rules.d:
+sudo cp ~/Downloads/70-fdcanusb.rules /etc/udev/rules.d
+sudo udevadm control --reload-rules
+sudo udevadm trigger --subsystem-match=tty
+\end{lstlisting}
