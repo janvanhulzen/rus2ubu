@@ -1,6 +1,7 @@
-To install Moteus GUI on a fresh install of Ubuntu 22.04 a few steps are needed.
+To install Moteus GUI on a fresh install of Ubuntu 22.04 a few steps are needed. I am by no means an 
+expert on the use of linux so some steps may be redundant or obsolete after july 2024.
 
-Start with
+Start with:
 
 $ sudo apt update && sudo apt upgrade -y
 
@@ -20,7 +21,8 @@ To enable a reliable software enviroment a few packages need to be installed.
 
 $ sudo apt install build-essential libssl-dev libffi-dev python3-dev
 
-The Next step is to set up a virtual enviroment to safely use python without interfering with system packages. 
+The Next step is to set up a virtual enviroment to safely use python without interfering with 
+system packages. 
 
 $ sudo apt install python3-venv -y
 
@@ -49,37 +51,43 @@ Start the gui using
 
 $ python3 -m moteus_gui.tview --devices=1
 
-At this point some errors may pop up most notably an error stating that Numpy 2.0.0 
+At this point some errors may pop up most notably an error stating that Numpy 2.0.0 does not mix
+with packages intended for or compiled with Numpy 1.0.0. Investigate this using
 We krijgen nu een error over numpy package.
-\begin{lstlisting}[language=bash]
-python3
-import numpy 
-numpy.__version__
-\end{lstlisting}
-dit is versie 2.0.0. We moeten de versie downgraden naar
-\begin{lstlisting}[language=bash]
-pip install --upgrade numpy==1.26.4
-\end{lstlisting}
-Dit command deinstalleerd numpy 2.0.0 en installeert de laatste numpy 1 versie van 6 Februari 2024.
 
-\begin{lstlisting}[language=bash]
-export QT_DEBUG_PLUGINS=1
-\end{lstlisting}
-Het blijkt dat de fout komt door een missend QT package genaamd libxcb-xinerama0. De oplossing (via google) is
-\begin{lstlisting}[language=bash]
-sudo apt-get install libxcb-xinerama0
-sudo apt-get install libxkbcommon-x11-0 libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-randr0 libxcb-render-util0 libxcb-xinerama0 libxcb-xfixes0 libegl1-mesa
-\end{lstlisting}
+$ python3
+$ import numpy 
+$ numpy.__version__
 
+Indeed the version is 2.0.0. Downgrade this to 1.26.4 using
 
-Ga naar github en download de file
-{\small \url{https://github.com/mjbots/fdcanusb/blob/master/70-fdcanusb.rules}}
+$ pip install --upgrade numpy==1.26.4
 
+which is the last package before 2.0.0 and dates from february 6 2024. Having fixed the numpy problem
+a second problem may emerge. This problem is related to QT. Investigate using
 
+$ export QT_DEBUG_PLUGINS=1
 
-\begin{lstlisting}[language=bash]
+when running 
+
+$ python3 -m moteus_gui.tview --devices=1
+
+angain. It appears that the error is related ti a missing QT package named libxcb-xinerama0. 
+
+The solution to this problem is found (using google) 
+
+$ sudo apt-get install libxcb-xinerama0
+$ sudo apt-get install libxkbcommon-x11-0 libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-randr0 libxcb-render-util0 libxcb-xinerama0 libxcb-xfixes0 libegl1-mesa
+
+Do not forget that the canusb device needs a few steps as is outlined on 
+
+https://github.com/mjbots/fdcanusb/blob/master/70-fdcanusb.rules
+
+which states that the file 70-fdcanusb.rules should be downloaded and copied into /etc/udev/rules.d
+
 # Install into /etc/udev/rules.d:
 sudo cp ~/Downloads/70-fdcanusb.rules /etc/udev/rules.d
 sudo udevadm control --reload-rules
 sudo udevadm trigger --subsystem-match=tty
-\end{lstlisting}
+
+
